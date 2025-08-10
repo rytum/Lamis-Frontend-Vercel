@@ -1,0 +1,20 @@
+{
+    "answer": "**🎯 DIRECT ANSWER**\nTheft is the unlawful taking of another's property with the intent to permanently deprive them of it. The legal definition and penalties vary across federal and state jurisdictions.\n\n**📖 FEDERAL LAW**\nUnder 18 U.S.C. Chapter 113 (Stolen Property) and Chapter 103 (Robbery and Burglary), theft includes:\n- Taking property belonging to the United States (18 U.S.C. § 2112)\n- Taking property within special maritime/territorial jurisdiction (18 U.S.C. § 2111)\n\nFederal Penalties:\n- Basic theft: Up to 10 years imprisonment\n- Enhanced theft (violence/federal property): Up to 15 years\n- Multiple offense enhancements available under Federal Sentencing Guidelines\n\n**🏛️ CALIFORNIA LAW**\nCalifornia defines theft under Penal Code § 490.5:\n- Basic theft: Taking property without consent\n- Organized retail theft: Acting in concert with others (§ 490.5(a))\n\nCalifornia Penalties:\n- Misdemeanor (value under $950): Up to 1 year county jail\n- Felony (value over $950): 16 months, 2 or 3 years under PC § 1170(h)\n- Organized retail theft: Up to 3 years under PC § 1170(h)\n\n**⚖️ CASE LAW**\nTwo relevant cases interpret theft statutes:\n\nPeople v. Reid (2016)\n- Establishes test for separate theft offenses vs. single continuing offense\n- \"Whether the evidence discloses one general intent or separate and distinct intents\"\nDownload: ../../Data/casefiles/People_v._Reid.pdf\n\nPeople v. Van Orden\n- Addresses separation between theft and subsequent acts\n- Requires \"substantial break\" between taking and later conduct\nDownload: ../../Data/casefiles/California_v._Van_Orden.pdf\n\n**💰 COMPREHENSIVE PENALTY ANALYSIS**\nFederal:\n- Base penalties: 0-10 years\n- Enhanced penalties: Up to 15-20 years\n- Fines: Up to $250,000 per offense\n\nCalifornia:\n- Misdemeanor: Up to 1 year + $1,000 fine\n- Felony: 16 months to 3 years under PC § 1170(h)\n- Enhancements for prior convictions/aggravating factors\n\n**🔗 INTEGRATED ANALYSIS**\nThe three layers work together:\n1. Federal law establishes baseline theft definitions\n2. California law provides more specific provisions\n3. Case law interprets how to apply statutes in practice\n\nFederal prosecution typically focuses on interstate theft or federal property, while California handles most local theft cases. Cases like Reid and Van Orden guide how courts determine single vs. multiple offenses and related conduct.\n\n**📥 CASE DOWNLOADS**\n1. People v. Reid: ../../Data/casefiles/People_v._Reid.pdf\n2. California v. Van Orden: ../../Data/casefiles/California_v._Van_Orden.pdf",
+    "case_downloads": [
+        {
+            "name": "Filed 4/20/16  \n \n \n \n \nCERTIFIED FOR PARTIAL PUBLICATION* \n \nIN THE COURT OF APPEAL OF THE STATE OF CALIFORNIA  \nFIFTH APPELLATE DISTRICT  \n \n \n \nTHE PEOPLE,  \n \nPlaintiff and Respondent,  \n \n  v. \n \nMARC LYNDS REID II",
+            "url": "/download/People_v._Reid.pdf"
+        },
+        {
+            "name": "See Dissenting Opinion  \nCERTIFIED FOR PUBLICATION  \n \nIN THE COURT OF APPEAL OF THE STATE OF CALIFORNIA  \n \nFOURTH APPELLATE DISTRICT  \n \nDIVISION TWO  \n \n \n \nTHE PEOPLE,  \n \n Plaintiff and Respondent,  \n \nv. \n \nCHARLES SAMUEL VAN  ORDEN",
+            "url": "/download/California_v._Van_Orden.pdf"
+        }
+    ],
+    "sources": [
+        "18 U.S.C. § 408 - STOLEN PROPERTY",
+        "18 U.S.C. § 451 - ROBBERY AND BURGLARY",
+        "California Penal Code § 4 - Robbery [211 - 215]  ( Chapter 4 enacted 1872. )",
+        "California Penal Code § 490.5 - Approved in Proposition 36 at the"
+    ],
+    "success": true
+}
