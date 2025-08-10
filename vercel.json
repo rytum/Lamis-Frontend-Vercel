@@ -3,16 +3,14 @@
     {
       "source": "/(.*)",
       "destination": "/index.html"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/workflow",
-      "dest": "/index.html"
     },
     {
-      "src": "/workflow-panels",
-      "dest": "/index.html"
+      "source": "/workflow",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/workflow-panels",
+      "destination": "/index.html"
     }
   ]
 }
