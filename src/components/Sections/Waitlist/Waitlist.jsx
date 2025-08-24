@@ -13,7 +13,7 @@ export default function Waitlist() {
   useEffect(() => {
     // Only sync if authenticated, user exists, and not already syncing/success
     if (isAuthenticated && user && syncState === 'idle') {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = 'https://backend.lamis.ai';
       setSyncState('syncing');
       fetch(`${API_BASE_URL}/api/auth0/save`, {
         method: 'POST',

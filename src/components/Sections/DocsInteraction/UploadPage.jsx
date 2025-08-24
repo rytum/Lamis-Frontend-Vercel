@@ -44,6 +44,10 @@ const UploadPage = () => {
     const [currentSession, setCurrentSession] = useState(null);
     const [showHistorySidebar, setShowHistorySidebar] = useState(false);
     
+    // Backend status state
+    const [backendStatus, setBackendStatus] = useState('checking');
+    const [backendUrl, setBackendUrl] = useState('');
+    
     const fileInputRef = useRef(null);
     const messagesEndRef = useRef(null);
 
@@ -55,7 +59,76 @@ const UploadPage = () => {
     // Load sessions on component mount
     useEffect(() => {
         loadSessions();
+        checkBackendStatus();
     }, []);
+
+    // Check backend status and test both local and deployed backends
+    const checkBackendStatus = async () => {
+        const localUrl = 'http://localhost:5000';
+        const deployedUrl = 'https://backend.lamis.ai';
+        
+        // Get current API URL from environment
+        const currentApiUrl = import.meta.env.VITE_API_BASE_URL || localUrl;
+        setBackendUrl(currentApiUrl);
+        
+        console.log('🔧 [UploadPage] Checking backend status...');
+        console.log('🔧 [UploadPage] Current API URL:', currentApiUrl);
+        
+        try {
+            // Test current backend first
+            const response = await fetch(`${currentApiUrl}/api/health`, { 
+                method: 'GET',
+                signal: AbortSignal.timeout(5000) // 5 second timeout
+            });
+            
+            if (response.ok) {
+                setBackendStatus('available');
+                console.log('✅ [UploadPage] Current backend is available');
+            } else {
+                setBackendStatus('error');
+                console.log('❌ [UploadPage] Current backend returned error status:', response.status);
+            }
+        } catch (error) {
+            console.log('❌ [UploadPage] Current backend not accessible:', error.message);
+            
+            // Test local backend
+            try {
+                const localResponse = await fetch(`${localUrl}/api/health`, { 
+                    method: 'GET',
+                    signal: AbortSignal.timeout(5000)
+                });
+                
+                if (localResponse.ok) {
+                    setBackendStatus('local-available');
+                    console.log('✅ [UploadPage] Local backend is available');
+                } else {
+                    setBackendStatus('local-error');
+                    console.log('❌ [UploadPage] Local backend returned error status:', localResponse.status);
+                }
+            } catch (localError) {
+                console.log('❌ [UploadPage] Local backend not accessible:', localError.message);
+                
+                // Test deployed backend
+                try {
+                    const deployedResponse = await fetch(`${deployedUrl}/api/health`, { 
+                        method: 'GET',
+                        signal: AbortSignal.timeout(5000)
+                    });
+                    
+                    if (deployedResponse.ok) {
+                        setBackendStatus('deployed-available');
+                        console.log('✅ [UploadPage] Deployed backend is available');
+                    } else {
+                        setBackendStatus('deployed-error');
+                        console.log('❌ [UploadPage] Deployed backend returned error status:', deployedResponse.status);
+                    }
+                } catch (deployedError) {
+                    setBackendStatus('unavailable');
+                    console.log('❌ [UploadPage] Deployed backend not accessible:', deployedError.message);
+                }
+            }
+        }
+    };
 
     // Load all document sessions
     const loadSessions = async () => {
@@ -133,24 +206,35 @@ const UploadPage = () => {
         }
         setLoading(true);
         setError('');
+        
+        // Get API base URL from environment or use localhost as fallback
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        console.log('🔧 [UploadPage] Using API Base URL:', API_BASE_URL);
+        
         try {
             const formData = new FormData();
             formData.append('file', file);
             formData.append('documentName', file.name || 'newDocument');
-            // Optionally add metadata here
+            
             const token = localStorage.getItem('token');
             if (!token) throw new Error('Please log in to use this feature');
-            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+            
+            console.log('🔧 [UploadPage] Attempting to upload to:', `${API_BASE_URL}/api/document-interaction/upload`);
+            
             const response = await fetch(`${API_BASE_URL}/api/document-interaction/upload`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: formData
             });
+            
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to upload document');
+                throw new Error(errorData.message || `Upload failed with status: ${response.status}`);
             }
+            
             const data = await response.json();
+            console.log('✅ [UploadPage] Upload successful:', data);
+            
             setDocumentId(data.documentId);
             setChatMode(true);
             setMessages([
@@ -160,7 +244,14 @@ const UploadPage = () => {
             // Reload sessions to get the new session
             await loadSessions();
         } catch (err) {
-            setError(err.message || 'Failed to upload document');
+            console.error('❌ [UploadPage] Upload error:', err);
+            
+            // Check if it's a network error (backend not available)
+            if (err.name === 'TypeError' && err.message.includes('fetch')) {
+                setError(`Backend not available at ${API_BASE_URL}. Please check if your backend server is running.`);
+            } else {
+                setError(err.message || 'Failed to upload document');
+            }
         } finally {
             setLoading(false);
         }
@@ -172,10 +263,17 @@ const UploadPage = () => {
         setLoading(true);
         setError('');
         setMessages(prev => [...prev, { role: 'user', content: question }]);
+        
+        // Get API base URL from environment or use localhost as fallback
+        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        console.log('🔧 [UploadPage] Sending message using API Base URL:', API_BASE_URL);
+        
         try {
             const token = localStorage.getItem('token');
             if (!token) throw new Error('Please log in to use this feature');
-            const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+            
+            console.log('🔧 [UploadPage] Sending message to:', `${API_BASE_URL}/api/document-interaction/chat`);
+            
             const response = await fetch(`${API_BASE_URL}/api/document-interaction/chat`, {
                 method: 'POST',
                 headers: {
@@ -187,11 +285,15 @@ const UploadPage = () => {
                     message: question
                 })
             });
+            
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to get answer from AI');
+                throw new Error(errorData.message || `Chat failed with status: ${response.status}`);
             }
+            
             const data = await response.json();
+            console.log('✅ [UploadPage] Chat response received:', data);
+            
             setMessages(prev => [...prev, {
                 role: 'assistant',
                 content: data.response || data.content || '',
@@ -204,7 +306,15 @@ const UploadPage = () => {
             // Reload sessions to update the current session
             await loadSessions();
         } catch (err) {
-            setError(err.message || 'Failed to process document chat');
+            console.error('❌ [UploadPage] Chat error:', err);
+            
+            // Check if it's a network error (backend not available)
+            if (err.name === 'TypeError' && err.message.includes('fetch')) {
+                setError(`Backend not available at ${API_BASE_URL}. Please check if your backend server is running.`);
+            } else {
+                setError(err.message || 'Failed to process document chat');
+            }
+            
             setMessages(prev => [...prev, { role: 'error', content: err.message || 'AI Q&A failed' }]);
         } finally {
             setLoading(false);
@@ -376,6 +486,43 @@ const UploadPage = () => {
                                     </button>
                                 )}
                                 {error && <div className="mt-2 text-red-400 text-center">{error}</div>}
+                                
+                                {/* Backend Status Indicator */}
+                                <div className="mt-4 text-center space-y-2">
+                                    {backendStatus === 'checking' && (
+                                        <div className="inline-flex items-center px-3 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 mr-2"></div>
+                                            Checking backend connection...
+                                        </div>
+                                    )}
+                                    
+                                    {backendStatus === 'local-available' && (
+                                        <div className="inline-flex items-center px-3 py-2 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414z" clipRule="evenodd" />
+                                            </svg>
+                                            Local backend available (port 5000)
+                                        </div>
+                                    )}
+                                    {backendStatus === 'deployed-available' && (
+                                        <div className="inline-flex items-center px-3 py-2 text-sm text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414z" clipRule="evenodd" />
+                                            </svg>
+                                            Deployed backend available
+                                        </div>
+                                    )}
+                                    {backendStatus === 'unavailable' && (
+                                        <div className="inline-flex items-center px-3 py-2 text-sm text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                                            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                            </svg>
+                                            No backends accessible
+                                        </div>
+                                    )}
+                                    
+
+                                </div>
                             </form>
                         ) : (
                             <div className="flex flex-col w-full h-full max-w-4xl mx-auto">

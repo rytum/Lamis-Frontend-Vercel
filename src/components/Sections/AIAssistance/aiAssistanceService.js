@@ -1,7 +1,7 @@
 // AI assistance service that connects to the Express wrapper API
 
 // API configuration
-const API_BASE_URL = import.meta.env.VITE_AI_ASSISTANT_API_URL || 'http://localhost:6000';
+const API_BASE_URL = 'https://aibackend.lamis.ai';
 const API_ENDPOINTS = {
   query: `${API_BASE_URL}/api/query`,
   health: `${API_BASE_URL}/api/health`,

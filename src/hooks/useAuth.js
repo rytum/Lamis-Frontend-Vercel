@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+
+const API_BASE_URL = 'https://backend.lamis.ai';
 
 export const useAuth = () => {
   const { isAuthenticated, user, isLoading } = useAuth0();
@@ -14,7 +16,6 @@ export const useAuth = () => {
       }
 
       try {
-        const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
         // First, save the user to get their ID
         const saveResponse = await fetch(`${API_BASE_URL}/api/auth0/save`, {
           method: 'POST',

@@ -529,9 +529,23 @@ const AIAssistanceView = () => {
     } catch (error) {
       console.error('Failed to send message:', error);
       setAiStartedResponding(false);
+      
+      // Provide more specific error messages
+      let errorContent = 'Sorry, I encountered an error. Please try again.';
+      
+      if (error.message.includes('AI service unavailable')) {
+        errorContent = 'The AI service is currently unavailable. Please try again in a few moments.';
+      } else if (error.message.includes('AI service is currently unavailable')) {
+        errorContent = 'The AI service is currently unavailable. Please try again in a few moments.';
+      } else if (error.message.includes('Network error')) {
+        errorContent = 'Network connection error. Please check your internet connection and try again.';
+      } else if (error.message.includes('timeout')) {
+        errorContent = 'Request timed out. The AI service is taking too long to respond. Please try again.';
+      }
+      
       const errorMessage = {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: errorContent,
         id: Date.now() + 1,
         isStreaming: false
       };
@@ -613,7 +627,7 @@ const AIAssistanceView = () => {
   // Function to test Flask API connectivity
   const testFlaskAPIConnectivity = async () => {
     try {
-      const response = await fetch('/flask-api/api/health', {
+      const response = await fetch('https://aibackend.lamis.ai/api/health', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -644,7 +658,7 @@ const AIAssistanceView = () => {
         const isFlaskRunning = await testFlaskAPIConnectivity();
         if (!isFlaskRunning) {
           console.error('Flask API is not running or not accessible');
-          setDownloadStatus({ type: 'error', message: 'AI service is not running. Please start the Flask API server at localhost:6000' });
+          setDownloadStatus({ type: 'error', message: 'AI service is not running. Please check the AI backend service.' });
           return;
         }
       }
@@ -652,8 +666,8 @@ const AIAssistanceView = () => {
       // Construct the full URL to the Flask API
       let downloadUrl = download.url;
       if (download.url.startsWith('/download/')) {
-        // This is a Flask API download URL, use the proxied URL
-        downloadUrl = `/flask-api${download.url}`;
+        // This is a Flask API download URL, use the direct AI backend URL
+        downloadUrl = `https://aibackend.lamis.ai${download.url}`;
       } else if (download.url.startsWith('./') || download.url.startsWith('../')) {
         // Convert relative path to absolute path
         downloadUrl = `${window.location.origin}/Data/casefiles/${download.url.split('/').pop()}`;
@@ -759,7 +773,7 @@ const AIAssistanceView = () => {
       } else if (error.message.includes('Server returned HTML instead of PDF')) {
         errorMessage = 'Server returned an error page instead of the PDF file. Please check if the AI service is running.';
       } else if (error.message.includes('Flask AI service is not running')) {
-        errorMessage = 'AI service is not running. Please start the Flask API server at http://localhost:6000';
+        errorMessage = 'AI service is not running. Please check the AI backend service.';
       }
       
       setDownloadStatus({ type: 'error', message: errorMessage });
@@ -783,7 +797,7 @@ const AIAssistanceView = () => {
         try {
           let fallbackUrl = download.url;
           if (download.url.startsWith('/download/')) {
-            fallbackUrl = `/flask-api${download.url}`;
+            fallbackUrl = `https://aibackend.lamis.ai${download.url}`;
           }
           console.log('Attempting to open fallback URL in new tab:', fallbackUrl);
           window.open(fallbackUrl, '_blank');
@@ -811,7 +825,7 @@ const AIAssistanceView = () => {
   // Test function to verify Flask API response
   const testFlaskAPI = async () => {
     try {
-      const response = await fetch('/flask-api/api/query', {
+      const response = await fetch('https://aibackend.lamis.ai/api/query', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -838,7 +852,7 @@ const AIAssistanceView = () => {
   const testDownloadEndpoint = async (filename) => {
     try {
       console.log('Testing download endpoint for:', filename);
-      const response = await fetch(`/flask-api/download/${filename}`, {
+      const response = await fetch(`https://aibackend.lamis.ai/download/${filename}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/pdf,application/json,*/*'
@@ -875,11 +889,11 @@ const AIAssistanceView = () => {
       console.log('Testing Flask API status...');
       
       // Test health endpoint
-      const healthResponse = await fetch('/flask-api/api/health');
+      const healthResponse = await fetch('https://aibackend.lamis.ai/api/health');
       console.log('Health endpoint status:', healthResponse.status);
       
       // Test status endpoint
-      const statusResponse = await fetch('/flask-api/api/status');
+      const statusResponse = await fetch('https://aibackend.lamis.ai/api/status');
       console.log('Status endpoint status:', statusResponse.status);
       
       if (statusResponse.ok) {
@@ -887,9 +901,17 @@ const AIAssistanceView = () => {
         console.log('Flask API status:', statusData);
       }
       
+      // Show status to user
+      if (healthResponse.ok && statusResponse.ok) {
+        setDownloadStatus({ type: 'success', message: 'AI Backend is running and accessible!' });
+      } else {
+        setDownloadStatus({ type: 'error', message: `AI Backend health: ${healthResponse.status}, status: ${statusResponse.status}` });
+      }
+      
       return healthResponse.ok && statusResponse.ok;
     } catch (error) {
       console.error('Flask API status test failed:', error);
+      setDownloadStatus({ type: 'error', message: 'AI Backend connection failed. Please check the service.' });
       return false;
     }
   };
@@ -1526,12 +1548,104 @@ const AIAssistanceView = () => {
                           </div>
                         </button>
                         <button
+                          onClick={async () => {
+                            try {
+                              setDownloadStatus({ type: 'info', message: 'Testing direct AI backend call...' });
+                              const response = await fetch('https://aibackend.lamis.ai/api/query', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  query: 'test case law',
+                                  include_ai_response: true,
+                                  include_graphs: true
+                                })
+                              });
+                              
+                              if (response.ok) {
+                                const data = await response.json();
+                                console.log('Direct AI backend test successful:', data);
+                                setDownloadStatus({ type: 'success', message: 'Direct AI backend call successful! Check console for details.' });
+                              } else {
+                                const errorText = await response.text();
+                                console.error('Direct AI backend test failed:', response.status, errorText);
+                                setDownloadStatus({ type: 'error', message: `Direct AI backend call failed: ${response.status}` });
+                              }
+                            } catch (error) {
+                              console.error('Direct AI backend test error:', error);
+                              setDownloadStatus({ type: 'error', message: `Direct AI backend test error: ${error.message}` });
+                            }
+                          }}
+                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                          style={{ backgroundColor: '#121212' }}
+                        >
+                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
+                            Test Direct AI
+                          </div>
+                        </button>
+                        <button
                           onClick={testFlaskAPIStatus}
                           className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
                           style={{ backgroundColor: '#121212' }}
                         >
                           <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
                             Test Flask Status
+                          </div>
+                        </button>
+                        <button
+                          onClick={async () => {
+                            console.log('=== AI Backend Debug Info ===');
+                            console.log('AI Backend URL:', 'https://aibackend.lamis.ai');
+                            console.log('Backend URL:', 'https://backend.lamis.ai');
+                            
+                            // Test AI backend health
+                            try {
+                              const healthResponse = await fetch('https://aibackend.lamis.ai/api/health');
+                              console.log('AI Backend Health Status:', healthResponse.status);
+                              console.log('AI Backend Health OK:', healthResponse.ok);
+                              
+                              if (healthResponse.ok) {
+                                const healthData = await healthResponse.json();
+                                console.log('AI Backend Health Data:', healthData);
+                              }
+                            } catch (error) {
+                              console.error('AI Backend Health Check Failed:', error);
+                            }
+                            
+                            // Test backend health
+                            try {
+                              const backendHealthResponse = await fetch('https://backend.lamis.ai/api/health');
+                              console.log('Backend Health Status:', backendHealthResponse.status);
+                              console.log('Backend Health OK:', backendHealthResponse.ok);
+                            } catch (error) {
+                              console.error('Backend Health Check Failed:', error);
+                            }
+                            
+                            setDownloadStatus({ type: 'info', message: 'Debug info logged to console. Check browser console for details.' });
+                          }}
+                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                          style={{ backgroundColor: '#121212' }}
+                        >
+                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
+                            Debug Info
+                          </div>
+                        </button>
+                        <button
+                          onClick={async () => {
+                            setDownloadStatus({ type: 'info', message: 'Testing AI Backend connectivity...' });
+                            const isConnected = await testFlaskAPIConnectivity();
+                            if (isConnected) {
+                              setDownloadStatus({ type: 'success', message: 'AI Backend is connected and accessible!' });
+                            } else {
+                              setDownloadStatus({ type: 'error', message: 'AI Backend connection failed!' });
+                            }
+                          }}
+                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
+                          style={{ backgroundColor: '#121212' }}
+                        >
+                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
+                            Test AI Connection
                           </div>
                         </button>
                         <button

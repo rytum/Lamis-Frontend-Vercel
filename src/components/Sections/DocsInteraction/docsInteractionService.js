@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api/document-interaction';
+// Use environment variable for API base URL, fallback to localhost
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL 
+    ? `${import.meta.env.VITE_API_BASE_URL}/api/document-interaction`
+    : '/api/document-interaction';
+
+console.log('🔧 [DocsInteractionService] API Base URL:', API_BASE_URL);
+console.log('🔧 [DocsInteractionService] Environment VITE_API_BASE_URL:', import.meta.env.VITE_API_BASE_URL);
 
 // Helper function to get auth token
 const getAuthHeaders = () => {

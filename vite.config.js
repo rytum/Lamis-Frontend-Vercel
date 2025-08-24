@@ -11,13 +11,29 @@ export default defineConfig({
   plugins: [react(),tailwindcss()],
   server: {
     proxy: {
-      '/api': process.env.VITE_API_BASE_URL || 'http://localhost:5000',
-      '/flask-api': {
-        target: process.env.VITE_FLASK_API_URL || 'http://localhost:6000',
+      '/api': {
+        target: 'https://backend.lamis.ai',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/flask-api/, '')
+        secure: true,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
+      },
+      '/flask-api': {
+        target: 'https://aibackend.lamis.ai',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path.replace(/^\/flask-api/, ''),
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+        }
       }
     },
+    cors: true
   },
   resolve: {
     alias: {
