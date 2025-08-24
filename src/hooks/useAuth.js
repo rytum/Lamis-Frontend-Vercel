@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 
-const API_BASE_URL = 'https://backend.lamis.ai';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_LOCAL_URL || 'http://localhost:5000';
 
 export const useAuth = () => {
   const { isAuthenticated, user, isLoading } = useAuth0();

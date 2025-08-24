@@ -1,9 +1,10 @@
 // Backend AI Service - Uses AI API directly since backend is not accessible
 import axios from 'axios';
+import { API_ENDPOINTS } from '../../../utils/apiConfig';
 
-const API_BASE_URL = 'https://backend.lamis.ai';
-const AI_API_URL = 'https://aibackend.lamis.ai/api/query';
-const API_ENDPOINTS = {
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_LOCAL_URL || 'http://localhost:5000';
+const AI_API_URL = API_ENDPOINTS.AI.QUERY;
+const CHAT_ENDPOINTS = {
   sessions: `${API_BASE_URL}/api/chat/session`,
   messages: `${API_BASE_URL}/api/chat/message`,
   history: `${API_BASE_URL}/api/chat/history`,

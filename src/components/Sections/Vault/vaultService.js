@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://backend.lamis.ai/api/vault';
+const API_URL = `${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_LOCAL_URL || 'http://localhost:5000'}/api/vault`;
 
 // Get token from localStorage or Auth0
 const getAuthHeader = async () => {

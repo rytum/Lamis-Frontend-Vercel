@@ -1,11 +1,12 @@
 // AI assistance service that connects to the Express wrapper API
+import { API_ENDPOINTS } from '../../../utils/apiConfig';
 
 // API configuration
-const API_BASE_URL = 'https://aibackend.lamis.ai';
-const API_ENDPOINTS = {
-  query: `${API_BASE_URL}/api/query`,
-  health: `${API_BASE_URL}/api/health`,
-  status: `${API_BASE_URL}/api/status`
+const API_BASE_URL = import.meta.env.VITE_AI_API_BASE_URL || 'http://localhost:5001';
+const LOCAL_API_ENDPOINTS = {
+  query: API_ENDPOINTS.AI.QUERY,
+  health: API_ENDPOINTS.AI.HEALTH,
+  status: API_ENDPOINTS.AI.STATUS
 };
 
 // Fallback static response for testing/offline mode
@@ -416,7 +417,7 @@ export const aiAssistanceService = {
             
             // Try to get response from the API
             try {
-                const apiResponse = await fetch(API_ENDPOINTS.query, {
+                const apiResponse = await fetch(LOCAL_API_ENDPOINTS.query, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -518,7 +519,7 @@ export const aiAssistanceService = {
             
             // Try to get response from the API
             try {
-                const apiResponse = await fetch(API_ENDPOINTS.query, {
+                const apiResponse = await fetch(LOCAL_API_ENDPOINTS.query, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

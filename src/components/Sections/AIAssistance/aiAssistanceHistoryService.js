@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://backend.lamis.ai/api/chat';
+const API_URL = `${import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_LOCAL_URL || 'http://localhost:5000'}/api/chat`;
 
 const getAuthHeader = () => ({
   headers: {

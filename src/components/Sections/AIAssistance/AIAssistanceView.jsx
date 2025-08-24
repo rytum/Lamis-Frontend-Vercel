@@ -12,6 +12,11 @@ import SaveResponseToVault from '../Vault/SaveResponseToVault';
 import { Save, BarChart3, Download } from 'lucide-react';
 import { AnalyticsDashboard, CaseAnalyticsSummary } from './ChartComponents';
 import { enhanceLinksInHtml } from '../../../utils/linkUtils';
+import { API_CONFIG } from '../../../utils/apiConfig';
+
+// Environment configuration
+const API_BASE_URL = API_CONFIG.BASE_URL;
+const AI_API_BASE_URL = API_CONFIG.AI_BASE_URL;
 
 // Loading animation component to replace the single line
 const ThinkingAnimation = () => {
@@ -627,7 +632,7 @@ const AIAssistanceView = () => {
   // Function to test Flask API connectivity
   const testFlaskAPIConnectivity = async () => {
     try {
-      const response = await fetch('https://aibackend.lamis.ai/api/health', {
+      const response = await fetch(`${AI_API_BASE_URL}/api/health`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -667,7 +672,7 @@ const AIAssistanceView = () => {
       let downloadUrl = download.url;
       if (download.url.startsWith('/download/')) {
         // This is a Flask API download URL, use the direct AI backend URL
-        downloadUrl = `https://aibackend.lamis.ai${download.url}`;
+        downloadUrl = `${AI_API_BASE_URL}${download.url}`;
       } else if (download.url.startsWith('./') || download.url.startsWith('../')) {
         // Convert relative path to absolute path
         downloadUrl = `${window.location.origin}/Data/casefiles/${download.url.split('/').pop()}`;
@@ -797,7 +802,7 @@ const AIAssistanceView = () => {
         try {
           let fallbackUrl = download.url;
           if (download.url.startsWith('/download/')) {
-            fallbackUrl = `https://aibackend.lamis.ai${download.url}`;
+            fallbackUrl = `${AI_API_BASE_URL}${download.url}`;
           }
           console.log('Attempting to open fallback URL in new tab:', fallbackUrl);
           window.open(fallbackUrl, '_blank');
@@ -825,7 +830,7 @@ const AIAssistanceView = () => {
   // Test function to verify Flask API response
   const testFlaskAPI = async () => {
     try {
-      const response = await fetch('https://aibackend.lamis.ai/api/query', {
+      const response = await fetch(`${AI_API_BASE_URL}/api/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -852,7 +857,7 @@ const AIAssistanceView = () => {
   const testDownloadEndpoint = async (filename) => {
     try {
       console.log('Testing download endpoint for:', filename);
-      const response = await fetch(`https://aibackend.lamis.ai/download/${filename}`, {
+      const response = await fetch(`${AI_API_BASE_URL}/download/${filename}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/pdf,application/json,*/*'
@@ -889,11 +894,11 @@ const AIAssistanceView = () => {
       console.log('Testing Flask API status...');
       
       // Test health endpoint
-      const healthResponse = await fetch('https://aibackend.lamis.ai/api/health');
+      const healthResponse = await fetch(`${AI_API_BASE_URL}/api/health`);
       console.log('Health endpoint status:', healthResponse.status);
       
       // Test status endpoint
-      const statusResponse = await fetch('https://aibackend.lamis.ai/api/status');
+      const statusResponse = await fetch(`${AI_API_BASE_URL}/api/status`);
       console.log('Status endpoint status:', statusResponse.status);
       
       if (statusResponse.ok) {
@@ -1551,7 +1556,7 @@ const AIAssistanceView = () => {
                           onClick={async () => {
                             try {
                               setDownloadStatus({ type: 'info', message: 'Testing direct AI backend call...' });
-                              const response = await fetch('https://aibackend.lamis.ai/api/query', {
+                              const response = await fetch(`${AI_API_BASE_URL}/api/query`, {
                                 method: 'POST',
                                 headers: {
                                   'Content-Type': 'application/json',
@@ -1596,12 +1601,12 @@ const AIAssistanceView = () => {
                         <button
                           onClick={async () => {
                             console.log('=== AI Backend Debug Info ===');
-                            console.log('AI Backend URL:', 'https://aibackend.lamis.ai');
-                            console.log('Backend URL:', 'https://backend.lamis.ai');
+                            console.log('AI Backend URL:', AI_API_BASE_URL);
+                            console.log('Backend URL:', API_BASE_URL);
                             
                             // Test AI backend health
                             try {
-                              const healthResponse = await fetch('https://aibackend.lamis.ai/api/health');
+                              const healthResponse = await fetch(`${AI_API_BASE_URL}/api/health`);
                               console.log('AI Backend Health Status:', healthResponse.status);
                               console.log('AI Backend Health OK:', healthResponse.ok);
                               
@@ -1615,7 +1620,7 @@ const AIAssistanceView = () => {
                             
                             // Test backend health
                             try {
-                              const backendHealthResponse = await fetch('https://backend.lamis.ai/api/health');
+                              const backendHealthResponse = await fetch(`${API_BASE_URL}/api/health`);
                               console.log('Backend Health Status:', backendHealthResponse.status);
                               console.log('Backend Health OK:', backendHealthResponse.ok);
                             } catch (error) {
