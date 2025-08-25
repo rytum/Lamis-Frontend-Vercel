@@ -152,7 +152,8 @@ const WorkflowSection = () => {
         <header className="mb-6 sm:mb-8 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white text-center">Workflow Automation</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center">
-            Streamline your legal process for vandalism cases with our intelligent automated system.<br /> From client intake to case strategy, we've got you covered.
+           Simplify Your Workflow from Intake to Strategy
+Let our intelligent system automate the process, so you can deliver results faster.
           </p>
           <div className="mt-4 flex flex-wrap gap-3 justify-center">
             <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors text-sm font-medium" onClick={() => window.open('https://calendly.com/vishalydv202/30min', '_blank')}>
@@ -293,22 +294,24 @@ const WorkflowSection = () => {
           <h2 className="text-xl text-center sm:text-2xl font-bold text-gray-900 dark:text-white mb-8">Key Features of the Workflow Automation</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <FeatureCard Icon={IconClipboardText} title="Initial Assessment and Intake">
-              Systematic client intake gathers essential information like nature of vandalism, damage amount, evidence, police involvement, and insurance claims for proper case categorization.
+             Our systematic client intake gathers essential information, including the nature of vandalism, damage amount, evidence, police involvement, and insurance claims, for proper case categorization.
             </FeatureCard>
             <FeatureCard Icon={IconBinaryTree2} title="Intelligent Case Classification">
-              Automatically determines if a case is criminal or civil, and for criminal cases under California Penal Code § 594, differentiates between misdemeanor and felony charges.
+              The system automatically determines if a case is criminal or civil and, for criminal cases under California Penal Code § 594, differentiates between misdemeanor and felony charges.
             </FeatureCard>
             <FeatureCard Icon={IconScale} title="Jurisdictional Routing">
               Sophisticated jurisdiction determination flags cases that may fall under federal jurisdiction, ensuring they are prosecuted under the correct laws like 18 U.S.C. § 1361.
             </FeatureCard>
             <FeatureCard Icon={IconSparkles} title="Role-Based Process Branching">
-              Creates distinct pathways for Criminal Defense, Victim Assistance, and Civil Plaintiff to tailor the process to the client's specific needs.
+              Distinct pathways are created for Criminal Defense, Victim Assistance, and Civil Plaintiff to tailor the process to the client's specific needs.
+
             </FeatureCard>
             <FeatureCard Icon={IconBuilding} title="Automated Court Selection">
-              For civil cases, the system automatically routes to the appropriate court—Small Claims, Superior Court—based on the damage amounts involved.
+              For civil cases, the system automatically routes to the appropriate court—Small Claims or Superior Court—based on the damage amounts involved.
             </FeatureCard>
             <FeatureCard Icon={IconChartBar} title="Real-Time Progress Tracking">
-              Clients and attorneys can see the live status of their case directly on the workflow, including completed, active, and upcoming steps.
+              Clients and attorneys can track the live status of their case directly on the workflow, including completed, active, and upcoming steps.
+
             </FeatureCard>
           </div>
         </section>
@@ -318,16 +321,18 @@ const WorkflowSection = () => {
           <h2 className="text-xl text-center sm:text-2xl font-bold text-gray-900 dark:text-white mb-8">Workflow Automation Benefits for Law Firms</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             <BenefitCard Icon={IconSparkles} title="Enhanced Efficiency">
-              The automated decision trees reduce manual case assessment time while ensuring comprehensive evaluation of all relevant factors.
+              Automated decision trees reduce manual case assessment time while ensuring comprehensive evaluation of all relevant factors.
             </BenefitCard>
             <BenefitCard Icon={IconMessage2} title="Improved Client Communication">
               Visual flowcharts provide clear explanations of case progression and potential outcomes, enhancing attorney–client relationships.
+
             </BenefitCard>
             <BenefitCard Icon={IconShieldCheck} title="Risk Management">
               Systematic evaluation of jurisdiction, case classification, and strategic options minimizes the risk of procedural errors or missed opportunities.
+
             </BenefitCard>
             <BenefitCard Icon={IconSparkles} title="Standardized Quality">
-              Consistent application of legal standards across cases ensures uniform quality of representation.
+              Consistent application of legal standards across cases ensures uniform quality of representation.
             </BenefitCard>
           </div>
         </section>
