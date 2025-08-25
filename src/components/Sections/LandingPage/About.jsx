@@ -26,7 +26,7 @@ const About = () => {
             WHAT IS LAMIS AI?
           </h1>
           <p className="text-center text-gray-600 dark:text-gray-400 max-w-3xl text-xs sm:text-sm md:text-base mb-8 sm:mb-10 leading-relaxed">
-          Lamis AI is redefining how people access legal help. From personal issues like family disputes and fraud to workplace questions around HR policies, we make getting legal guidance simple, fast, and accessible. Our platform connects users with real lawyers for personal matters, while our AI chatbot instantly answers internal workplace queries — all from a phone, anytime. No stress. No legal jargon. Just help when it's needed most.
+          Lamis AI is redefining how people access legal help. From personal issues like family disputes or fraud to workplace concerns such as HR policies, we make getting legal guidance simple, fast, and accessible. Our platform connects users with real lawyers for personal matters, while our AI chatbot instantly answers workplace queries — all from a phone, anytime. No stress, No jargon. Just help when it’s needed most.
           </p>
         </div>
       </div>

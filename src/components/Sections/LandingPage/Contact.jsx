@@ -38,8 +38,7 @@ function Contact() {
               NOW!
             </span>
             <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-xl">
-              In order to start using Lamis AI,<br />
-              be one of the first to step into the future!
+              To start using Lamis AI<br/>Be one of the first to step into the future!
             </p>
             <button className="border border-[#a59ad6] text-gray-900 dark:text-white px-6 py-2 sm:px-8 sm:py-3 rounded-lg text-base sm:text-lg hover:bg-[#a59ad6] hover:text-white dark:hover:text-black transition-all duration-200 w-fit">
               Lamis AI
