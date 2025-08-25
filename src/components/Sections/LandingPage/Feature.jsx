@@ -4,18 +4,16 @@ const FeaturesSectionDemo = () => {
   const comingSoonCards = [
     {
       
-      description: "Something revolutionary is brewing. Stay tuned for the unveiling."
+      description: "Something revolutionary is brewing. Stay tuned."
     },
     {
-       
-      description: "A game-changing feature that will transform your experience."
-    },
-    {
-      
-      description: "Innovation in progress. Details to be revealed soon."
+      description: "Get ready for a game-changing feature that will transform your experience."
     },
     {
       
+      description: "Innovation in progress. Details coming soon."
+    },
+    {
       description: "The future of legal technology is almost here."
     },
   ];
@@ -28,11 +26,7 @@ const FeaturesSectionDemo = () => {
           REVOLUTIONARY FEATURES
         </h2>
         <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl mt-6 max-w-3xl mx-auto">
-          We're building something extraordinary. Stay tuned for the unveiling of our cutting-edge legal technology platform.
-          Something revolutionary is brewing. Stay tuned.
-          Get ready for a game-changing feature that will transform your experience.
-          Innovation in progress. Details coming soon.
-          The future of legal technology is almost here.
+          We're building something extraordinary. Stay tuned for the unveiling of our cutting-edge legal technology platform.
         </p>
       </div>
 
