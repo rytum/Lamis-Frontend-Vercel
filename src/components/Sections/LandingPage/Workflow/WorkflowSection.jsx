@@ -152,8 +152,8 @@ const WorkflowSection = () => {
         <header className="mb-6 sm:mb-8 text-center">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white text-center">Workflow Automation</h1>
           <p className="mt-2 text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-center">
-           Simplify Your Workflow from Intake to Strategy
-Let our intelligent system automate the process, so you can deliver results faster.
+           Simplify Your Workflow from Intake to Strategy <br/>
+Let our intelligent system automate the process, so you can deliver results faster
           </p>
           <div className="mt-4 flex flex-wrap gap-3 justify-center">
             <button className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors text-sm font-medium" onClick={() => window.open('https://calendly.com/vishalydv202/30min', '_blank')}>
