@@ -7,7 +7,7 @@ const Stats = () => {
       <span className="text-[#a59ad6] text-xs mb-6 tracking-[0.3em] font-medium text-center">METRICS</span>
       {/* Title */}
       <h1 className="text-center font-sans font-medium tracking-tight text-gray-900 dark:text-white text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[3.5rem] leading-none mb-10">
-        WHAT DOES THE NUMBERS SAY
+        WHAT DO THE NUMBERS SAY?
       </h1>
       <div className="numbers_wrapper grid grid-cols-3 w-full max-w-6xl h-[22rem] mt-16 relative items-center justify-center">
         {/* Left Stat */}
