@@ -96,7 +96,7 @@ export default function TestimonialSection() {
       <div className="max-w-4xl mx-auto text-center mb-10">
         <span className="text-purple-600 dark:text-purple-300 text-sm sm:text-base mb-2 tracking-widest uppercase">Testimonials</span>
         <h2 className="text-gray-900 dark:text-white font-sans font-medium text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
-          WHAT MAKES LAMIS AI<br className="hidden sm:block" /> UNIQUE FOR USERS?
+          WHAT SETS LAMIS AI<br className="hidden sm:block" />APART FOR USERS?
         </h2>
       </div>
       

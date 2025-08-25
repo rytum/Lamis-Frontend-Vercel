@@ -38,7 +38,7 @@ function Contact() {
               NOW!
             </span>
             <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-xl">
-              To start using Lamis AI<br/>Be one of the first to step into the future!
+             Be one of the first to experience the<br/> future of legal tech with Lamis AI.
             </p>
             <button className="border border-[#a59ad6] text-gray-900 dark:text-white px-6 py-2 sm:px-8 sm:py-3 rounded-lg text-base sm:text-lg hover:bg-[#a59ad6] hover:text-white dark:hover:text-black transition-all duration-200 w-fit">
               Lamis AI

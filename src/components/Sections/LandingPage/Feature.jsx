@@ -29,6 +29,10 @@ const FeaturesSectionDemo = () => {
         </h2>
         <p className="text-gray-600 dark:text-gray-400 text-lg sm:text-xl mt-6 max-w-3xl mx-auto">
           We're building something extraordinary. Stay tuned for the unveiling of our cutting-edge legal technology platform.
+          Something revolutionary is brewing. Stay tuned.
+          Get ready for a game-changing feature that will transform your experience.
+          Innovation in progress. Details coming soon.
+          The future of legal technology is almost here.
         </p>
       </div>
 
