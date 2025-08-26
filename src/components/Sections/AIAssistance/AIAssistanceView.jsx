@@ -1534,164 +1534,57 @@ const AIAssistanceView = () => {
                   )}
                 </div>
                 
-                                 {/* Compact Action Buttons - Above Input - Only show when no user messages */}
+                                 {/* Suggested Content Buttons - Above Input - Only show when no user messages */}
                  {messages.filter(msg => msg.role === 'user').length === 0 && (
                   <div className="absolute bottom-32 left-0 right-0 z-20 bg-transparent py-3">
                     <div className="max-w-4xl mx-auto px-6">
-                      <div className="flex justify-center items-center gap-6">
+                      <div className="flex justify-center items-center gap-4">
                         <button
-                          onClick={() => navigate('/docs-interaction/upload')}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md" 
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Docs Interaction
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => navigate('/documents-drafting')}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Document Drafting
-                          </div>
-                        </button>
-                        <button
-                          onClick={testFlaskAPI}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test API
-                          </div>
-                        </button>
-                        <button
-                          onClick={async () => {
-                            try {
-                              setDownloadStatus({ type: 'info', message: 'Testing direct AI backend call...' });
-                              const response = await fetch(`${AI_API_BASE_URL}/api/query`, {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                  query: 'test case law',
-                                  include_ai_response: true,
-                                  include_graphs: true
-                                })
-                              });
-                              
-                              if (response.ok) {
-                                const data = await response.json();
-                                console.log('Direct AI backend test successful:', data);
-                                setDownloadStatus({ type: 'success', message: 'Direct AI backend call successful! Check console for details.' });
-                              } else {
-                                const errorText = await response.text();
-                                console.error('Direct AI backend test failed:', response.status, errorText);
-                                setDownloadStatus({ type: 'error', message: `Direct AI backend call failed: ${response.status}` });
-                              }
-                            } catch (error) {
-                              console.error('Direct AI backend test error:', error);
-                              setDownloadStatus({ type: 'error', message: `Direct AI backend test error: ${error.message}` });
+                          onClick={() => {
+                            const suggestedContent = "What legal implications and penalties are associated with vandalism?";
+                            // Find the input field and populate it
+                            const inputField = document.querySelector('textarea[placeholder*="Ask"], textarea[placeholder*="question"], input[placeholder*="Ask"], input[placeholder*="question"]') || 
+                                             document.querySelector('textarea') || 
+                                             document.querySelector('input[type="text"]');
+                            if (inputField) {
+                              inputField.value = suggestedContent;
+                              inputField.focus();
+                              // Trigger input event for React to recognize the change
+                              const event = new Event('input', { bubbles: true });
+                              inputField.dispatchEvent(event);
                             }
                           }}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
+                          className="group px-6 py-3 rounded-xl border-2 border-transparent hover:border-purple-300 dark:hover:border-purple-600 bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                         >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test Direct AI
+                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors text-center">
+                            Vandalism Law
+                            <div className="text-xs text-gray-600 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 mt-1 opacity-80">
+                             What legal implications and penalties are associated with vandalism?
+                            </div>
                           </div>
                         </button>
                         <button
-                          onClick={testFlaskAPIStatus}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test Flask Status
-                          </div>
-                        </button>
-                        <button
-                          onClick={async () => {
-                            console.log('=== AI Backend Debug Info ===');
-                            console.log('AI Backend URL:', AI_API_BASE_URL);
-                            console.log('Backend URL:', API_BASE_URL);
-                            
-                            // Test AI backend health
-                            try {
-                              const healthResponse = await fetch(`${AI_API_BASE_URL}/api/health`);
-                              console.log('AI Backend Health Status:', healthResponse.status);
-                              console.log('AI Backend Health OK:', healthResponse.ok);
-                              
-                              if (healthResponse.ok) {
-                                const healthData = await healthResponse.json();
-                                console.log('AI Backend Health Data:', healthData);
-                              }
-                            } catch (error) {
-                              console.error('AI Backend Health Check Failed:', error);
-                            }
-                            
-                            // Test backend health
-                            try {
-                              const backendHealthResponse = await fetch(`${API_BASE_URL}/api/health`);
-                              console.log('Backend Health Status:', backendHealthResponse.status);
-                              console.log('Backend Health OK:', backendHealthResponse.ok);
-                            } catch (error) {
-                              console.error('Backend Health Check Failed:', error);
-                            }
-                            
-                            setDownloadStatus({ type: 'info', message: 'Debug info logged to console. Check browser console for details.' });
-                          }}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Debug Info
-                          </div>
-                        </button>
-                        <button
-                          onClick={async () => {
-                            setDownloadStatus({ type: 'info', message: 'Testing AI Backend connectivity...' });
-                            const isConnected = await testFlaskAPIConnectivity();
-                            if (isConnected) {
-                              setDownloadStatus({ type: 'success', message: 'AI Backend is connected and accessible!' });
-                            } else {
-                              setDownloadStatus({ type: 'error', message: 'AI Backend connection failed!' });
+                          onClick={() => {
+                            const suggestedContent = "What is the distinction between vandalism and public art?";
+                            // Find the input field and populate it
+                            const inputField = document.querySelector('textarea[placeholder*="Ask"], textarea[placeholder*="question"], input[placeholder*="Ask"], input[placeholder*="question"]') || 
+                                             document.querySelector('textarea') || 
+                                             document.querySelector('input[type="text"]');
+                            if (inputField) {
+                              inputField.value = suggestedContent;
+                              inputField.focus();
+                              // Trigger input event for React to recognize the change
+                              const event = new Event('input', { bubbles: true });
+                              inputField.dispatchEvent(event);
                             }
                           }}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
+                          className="group px-6 py-3 rounded-xl border-2 border-transparent hover:border-purple-300 dark:hover:border-purple-600 bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                         >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test AI Connection
-                          </div>
-                        </button>
-                        <button
-                          onClick={testCaseSummaryRendering}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test Case Summaries
-                          </div>
-                        </button>
-                        <button
-                          onClick={testSourcesRendering}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test Sources
-                          </div>
-                        </button>
-                        <button
-                          onClick={() => testDownloadEndpoint('People_v._Montes.pdf')}
-                          className="group px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                          style={{ backgroundColor: '#121212' }}
-                        >
-                          <div className="text-sm font-medium text-white group-hover:text-purple-300 transition-colors whitespace-nowrap">
-                            Test Download
+                          <div className="text-sm font-medium text-gray-700 dark:text-gray-300 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors text-center">
+                             Art vs Vandalism
+                            <div className="text-xs text-gray-600 dark:text-gray-400 group-hover:text-purple-600 dark:group-hover:text-purple-400 mt-1 opacity-80">
+                             What is the distinction between vandalism and public art?
+                            </div>
                           </div>
                         </button>
                       </div>

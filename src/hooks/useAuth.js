@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE_LOCAL_URL || 'http://localhost:5000';
+import { API_ENDPOINTS } from '../utils/apiConfig';
 
 export const useAuth = () => {
   const { isAuthenticated, user, isLoading } = useAuth0();
@@ -16,30 +15,46 @@ export const useAuth = () => {
       }
 
       try {
+        console.log('Checking subscription status...');
+        console.log('Using API endpoint:', API_ENDPOINTS.BACKEND.SAVE_USER);
+        
         // First, save the user to get their ID
-        const saveResponse = await fetch(`${API_BASE_URL}/api/auth0/save`, {
+        const saveResponse = await fetch(API_ENDPOINTS.BACKEND.SAVE_USER, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ user }),
         });
 
+        console.log('Save response status:', saveResponse.status);
+
         if (!saveResponse.ok) {
-          throw new Error('Failed to save user');
+          const errorText = await saveResponse.text();
+          console.error('Save response error:', errorText);
+          throw new Error(`Failed to save user: ${saveResponse.status} ${errorText}`);
         }
 
         const saveData = await saveResponse.json();
         const userId = saveData.user?._id;
+        console.log('User saved successfully, ID:', userId);
 
         if (userId) {
           // Then check their subscription status
-          const profileResponse = await fetch(`${API_BASE_URL}/api/auth0/${userId}`);
+          const profileUrl = `${API_ENDPOINTS.BACKEND.BASE}/${userId}`;
+          console.log('Fetching profile from:', profileUrl);
+          
+          const profileResponse = await fetch(profileUrl);
+          console.log('Profile response status:', profileResponse.status);
+          
           if (profileResponse.ok) {
             const profile = await profileResponse.json();
+            console.log('Profile data:', profile);
             setSubscriptionStatus(profile.user.subscription_status);
           } else {
+            console.warn('Profile fetch failed, defaulting to waitlist');
             setSubscriptionStatus('no'); // Default to waitlist if can't fetch status
           }
         } else {
+          console.warn('No user ID received, defaulting to waitlist');
           setSubscriptionStatus('no'); // Default to waitlist if no user ID
         }
       } catch (error) {
