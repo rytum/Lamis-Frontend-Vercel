@@ -1509,6 +1509,20 @@ const AIAssistanceView = () => {
                                   </>
                                 )}
 
+                                {/* Individual vault button for AI responses */}
+                                {msg.role === 'assistant' && msg.content && (
+                                  <div className="mt-3 flex justify-end">
+                                    <button
+                                      onClick={() => handleSaveResponseToVault(msg.content, userMessage)}
+                                      className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors"
+                                      title="Save this response to vault"
+                                    >
+                                      <Save className="h-3 w-3" />
+                                      Save Response
+                                    </button>
+                                  </div>
+                                )}
+
                               </div>
                             </div>
                           </div>
