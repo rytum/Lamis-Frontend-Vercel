@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useAuth } from '../../../hooks/useAuth';
+import { API_ENDPOINTS } from '../../../utils/apiConfig';
 
 export default function Waitlist() {
   const navigate = useNavigate();
@@ -13,28 +14,36 @@ export default function Waitlist() {
   useEffect(() => {
     // Only sync if authenticated, user exists, and not already syncing/success
     if (isAuthenticated && user && syncState === 'idle') {
-      const API_BASE_URL = 'https://backend.lamis.ai';
+      console.log('Starting user sync...');
+      console.log('Using API endpoint:', API_ENDPOINTS.BACKEND.SAVE_USER);
       setSyncState('syncing');
-      fetch(`${API_BASE_URL}/api/auth0/save`, {
+      fetch(API_ENDPOINTS.BACKEND.SAVE_USER, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user }),
       })
         .then(async (res) => {
+          console.log('Save response status:', res.status);
           if (!res.ok) {
             const data = await res.json().catch(() => ({}));
-            throw new Error(data.message || 'Failed to sync user');
+            console.error('Save failed:', data);
+            throw new Error(data.message || `Failed to sync user: ${res.status}`);
           }
           localStorage.setItem('token', res.token);
           return res.json();
         })
         .then(async (data) => {
+          console.log('User saved successfully:', data);
           // After saving, fetch the user profile from backend to check subscription_status
           const userId = data.user?._id;
           if (userId) {
-            const profileRes = await fetch(`${API_BASE_URL}/api/auth0/${userId}`);
+            const profileUrl = `${API_ENDPOINTS.BACKEND.BASE}/${userId}`;
+            console.log('Fetching profile from:', profileUrl);
+            const profileRes = await fetch(profileUrl);
+            console.log('Profile response status:', profileRes.status);
             if (profileRes.ok) {
               const profile = await profileRes.json();
+              console.log('Profile data:', profile);
               if (profile.user.subscription_status === 'yes') {
                 localStorage.setItem('token', data.token);
                 setSyncState('success');
@@ -49,6 +58,7 @@ export default function Waitlist() {
           }
         })
         .catch((err) => {
+          console.error('Error during user sync:', err);
           setError(err.message);
           setSyncState('error');
         });

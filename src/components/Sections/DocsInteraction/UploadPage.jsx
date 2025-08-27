@@ -8,6 +8,7 @@ import DocsInteractionSidebar from './DocsInteractionSidebar';
 import DocsInteractionDrawer from './DocsInteractionDrawer';
 import { Save } from 'lucide-react';
 import docsInteractionService from './docsInteractionService';
+import { API_CONFIG } from '../../../utils/apiConfig';
 
 // Loading animation component to replace the single line
 const ThinkingAnimation = () => {
@@ -65,10 +66,10 @@ const UploadPage = () => {
     // Check backend status and test both local and deployed backends
     const checkBackendStatus = async () => {
         const localUrl = 'http://localhost:5000';
-        const deployedUrl = 'https://backend.lamis.ai';
+        const deployedUrl = API_CONFIG.BASE_URL;
         
         // Get current API URL from environment
-        const currentApiUrl = import.meta.env.VITE_API_BASE_URL || localUrl;
+        const currentApiUrl = API_CONFIG.BASE_URL;
         setBackendUrl(currentApiUrl);
         
         console.log('🔧 [UploadPage] Checking backend status...');

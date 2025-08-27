@@ -231,18 +231,34 @@ function VoiceRecorder({ isRecording, onTranscript }) {
 }
 
 // Main ChatInput component
-const ChatInput = ({ onSend, onFileUpload, onMicToggle, isLoading = false, aiResponding = false }) => {
-  const [value, setValue] = useState("");
+const ChatInput = ({ onSend, onFileUpload, onMicToggle, isLoading = false, aiResponding = false, value: controlledValue, onChange: controlledOnChange }) => {
+  const [internalValue, setInternalValue] = useState("");
   const [files, setFiles] = useState([]);
   const [isRecording, setIsRecording] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const fileInputRef = useRef(null);
 
+  // Use controlled value if provided, otherwise use internal state
+  const value = controlledValue !== undefined ? controlledValue : internalValue;
+  const setValue = controlledOnChange ? (newValue) => {
+    if (typeof newValue === 'function') {
+      controlledOnChange({ target: { value: newValue(value) } });
+    } else {
+      controlledOnChange({ target: { value: newValue } });
+    }
+  } : setInternalValue;
+
   // Handler to send the message
   const handleSend = () => {
     if (value.trim() !== "" || files.length > 0) {
       if (onSend) onSend(value, files);
-      setValue("");
+      if (controlledValue !== undefined) {
+        // For controlled input, clear via onChange
+        setValue("");
+      } else {
+        // For uncontrolled input, set internal state
+        setInternalValue("");
+      }
       setFiles([]);
       setUploadSuccess(false);
     }

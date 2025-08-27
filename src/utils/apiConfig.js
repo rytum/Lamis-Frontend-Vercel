@@ -10,6 +10,8 @@ export const API_CONFIG = {
 export const API_ENDPOINTS = {
   // Backend API endpoints
   BACKEND: {
+    BASE: `${API_CONFIG.BASE_URL}/api/auth0`,
+    SAVE_USER: `${API_CONFIG.BASE_URL}/api/auth0/save`,
     CHAT_SESSIONS: `${API_CONFIG.BASE_URL}/api/chat/sessions`,
     CHAT_SESSION: `${API_CONFIG.BASE_URL}/api/chat/session`,
     CHAT_MESSAGE: `${API_CONFIG.BASE_URL}/api/chat/message`,
