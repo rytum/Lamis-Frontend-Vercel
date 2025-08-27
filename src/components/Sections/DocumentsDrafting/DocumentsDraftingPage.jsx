@@ -392,33 +392,16 @@ const DocumentsDraftingPage = () => {
         timestamp: msg.timestamp
       }));
       
-      const response = await fetch('/api/documents/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          message: message,
-          context: {
-            sessionId: sessionId,
-            title: form.title,
-            client: form.client,
-            author: form.author,
-            type: form.type,
-            conditions: conditions || '',
-            previousContent: aiContent[3] || '',
-            chatHistory: [...chatHistory, { role: 'user', content: message, timestamp: new Date().toISOString() }]
-          }
-        })
+      const data = await documentDraftingService.sendChatMessage(message, {
+        sessionId: sessionId,
+        title: form.title,
+        client: form.client,
+        author: form.author,
+        type: form.type,
+        conditions: conditions || '',
+        previousContent: aiContent[3] || '',
+        chatHistory: [...chatHistory, { role: 'user', content: message, timestamp: new Date().toISOString() }]
       });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const data = await response.json();
       
       const aiMessage = {
         role: 'assistant',
@@ -436,35 +419,24 @@ const DocumentsDraftingPage = () => {
 
       // Automatically save to database when AI responds
       try {
-        const saveResponse = await fetch('/api/documents', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            title: form.title,
-            client: form.client,
-            author: form.author,
-            type: form.type,
-            conditions: conditions,
-            aiContent: data.aiContent || data.content,
-            sessionId: sessionId,
-            chatHistory: [...messages, userMessage, aiMessage].map(msg => ({
-              role: msg.role,
-              content: msg.content,
-              timestamp: msg.timestamp
-            }))
-          })
+        await documentDraftingService.saveDocument({
+          title: form.title,
+          client: form.client,
+          author: form.author,
+          type: form.type,
+          conditions: conditions,
+          aiContent: data.aiContent || data.content,
+          sessionId: sessionId,
+          chatHistory: [...messages, userMessage, aiMessage].map(msg => ({
+            role: msg.role,
+            content: msg.content,
+            timestamp: msg.timestamp
+          }))
         });
-
-        if (saveResponse.ok) {
           console.log('Document automatically updated in database');
           // Refresh the drafting sessions list
           await fetchDraftingSessions();
-        } else {
-          console.warn('Failed to auto-update document:', await saveResponse.text());
-        }
+        
       } catch (saveError) {
         console.error('Auto-save error:', saveError);
         // Don't show error to user as this is background operation
@@ -488,21 +460,7 @@ const DocumentsDraftingPage = () => {
         throw new Error('Authentication required. Please log in again.');
       }
 
-      const response = await fetch('/api/documents/generate', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ ...form, conditions })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || 'Failed to generate agreement');
-      }
-
-      const data = await response.json();
+      const data = await documentDraftingService.generateDocument({ ...form, conditions });
       setAiContent(prev => ({ ...prev, 3: data.aiContent, 4: data.aiContent }));
       setDocumentGenerated(true);
     } catch (err) {
@@ -732,25 +690,11 @@ const DocumentsDraftingPage = () => {
           setMessages([initialAiMessage]);
         }
 
-        const response = await fetch('/api/documents/generate', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ 
-            ...form, 
-            conditions,
-            sessionId: sessionId
-          })
+        const data = await documentDraftingService.generateDocument({ 
+          ...form, 
+          conditions,
+          sessionId: sessionId
         });
-
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.message || 'Failed to generate agreement');
-        }
-
-        const data = await response.json();
         
         // Clean the AI content to remove thinking process and keep only the agreement
         const cleanContent = cleanAiContent(data.aiContent);
@@ -768,35 +712,24 @@ const DocumentsDraftingPage = () => {
 
         // Automatically save to database when AI completes generation
         try {
-          const saveResponse = await fetch('/api/documents', {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({
-              title: form.title,
-              client: form.client,
-              author: form.author,
-              type: form.type,
-              conditions: conditions,
-              aiContent: cleanContent,
-              sessionId: sessionId,
-              chatHistory: [...messages, completionMessage].map(msg => ({
-                role: msg.role,
-                content: msg.content,
-                timestamp: msg.timestamp
-              }))
-            })
+          await documentDraftingService.saveDocument({
+            title: form.title,
+            client: form.client,
+            author: form.author,
+            type: form.type,
+            conditions: conditions,
+            aiContent: cleanContent,
+            sessionId: sessionId,
+            chatHistory: [...messages, completionMessage].map(msg => ({
+              role: msg.role,
+              content: msg.content,
+              timestamp: msg.timestamp
+            }))
           });
-
-          if (saveResponse.ok) {
             console.log('Document automatically saved to database');
             // Refresh the drafting sessions list
             await fetchDraftingSessions();
-          } else {
-            console.warn('Failed to auto-save document:', await saveResponse.text());
-          }
+          
         } catch (saveError) {
           console.error('Auto-save error:', saveError);
           // Don't show error to user as this is background operation
@@ -1102,7 +1035,8 @@ const DocumentsDraftingPage = () => {
                   form={form} 
                   aiContent={aiContent} 
                   currentStep={currentStep} 
-                  conditions={conditions} 
+                  conditions={conditions}
+                  onSaveToVault={handleSaveToVault}
                 />
               </div>
             </div>

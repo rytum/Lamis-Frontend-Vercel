@@ -379,7 +379,7 @@ const VaultView = () => {
                                     {chat.title}
                                   </h3>
                                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                                    {chat.messages?.length || 0} messages
+                                    {(chat.messages?.length ?? 0) || (chat.metadata?.messages?.length ?? 0)} messages
                                   </span>
                                   {chat.folder && chat.folder !== selectedFolder && (
                                     <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full border border-purple-200 dark:border-purple-700">
@@ -399,7 +399,7 @@ const VaultView = () => {
                                   </div>
                                   <div className="flex items-center gap-1">
                                     <MessageSquare className="h-3 w-3 sm:h-4 sm:w-4" />
-                                    {chat.messages?.length || 0} messages
+                                    {(chat.messages?.length ?? 0) || (chat.metadata?.messages?.length ?? 0)} messages
                                   </div>
                                 </div>
                               </div>

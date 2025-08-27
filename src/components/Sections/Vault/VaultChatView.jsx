@@ -115,7 +115,11 @@ const VaultChatView = () => {
 
           <div className="bg-black rounded-lg shadow-lg p-6">
             <div className="space-y-4">
-              {vaultedChat?.messages?.map((msg, idx) => (
+              {(
+                vaultedChat?.messages ||
+                vaultedChat?.metadata?.messages ||
+                []
+              ).map((msg, idx) => (
                 <div
                   key={idx}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -130,6 +134,11 @@ const VaultChatView = () => {
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex-1">
                         <div className="whitespace-pre-wrap">{msg.content}</div>
+                        {vaultedChat?.metadata?.aiContent && idx === 0 && (
+                          <div className="mt-4 whitespace-pre-wrap">
+                            {vaultedChat.metadata.aiContent}
+                          </div>
+                        )}
                       </div>
                       <button
                         onClick={() => handleCopy(msg.content)}

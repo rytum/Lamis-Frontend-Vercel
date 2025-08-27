@@ -60,6 +60,37 @@ const SaveToVault = ({ sessionId, onSave, onCancel, isVisible, feature = 'ai-ass
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible, sessionId, feature, sessionData]);
 
+  const generateDefaultDescription = () => {
+    const isDocDraft = feature === 'document-drafting' || sessionId?.startsWith?.('doc-draft-');
+    let content = '';
+    if (isDocDraft) {
+      const ai = sessionData?.aiContent;
+      if (ai) {
+        if (typeof ai === 'string') content = ai;
+        else if (ai[3]) content = ai[3];
+        else if (ai[4]) content = ai[4];
+      }
+    }
+    if (!content) {
+      const msgs = sessionData?.messages;
+      if (Array.isArray(msgs) && msgs.length) {
+        const lastAssistant = [...msgs].reverse().find(m => m.role === 'assistant');
+        if (lastAssistant?.content) content = String(lastAssistant.content);
+      }
+    }
+    if (!content) return '';
+    const snippet = content.replace(/\s+/g, ' ').slice(0, 300).trim();
+    return snippet;
+  };
+
+  useEffect(() => {
+    if (isVisible && !description.trim()) {
+      const def = generateDefaultDescription();
+      if (def) setDescription(def);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible, sessionId, feature, sessionData]);
+
   const handleSave = async () => {
     if (!title.trim()) {
       alert('Please enter a title for the vaulted chat');
