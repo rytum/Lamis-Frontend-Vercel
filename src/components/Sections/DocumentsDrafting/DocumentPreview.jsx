@@ -1,23 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { FileText, Calendar, MapPin, Clock, User, Building, Type } from 'lucide-react';
 import StreamingText from '../AIAssistance/StreamingText';
-import SaveToVault from '../Vault/SaveToVault';
 
-const DocumentPreview = ({ form, aiContent, currentStep, conditions }) => {
-  const [showSaveToVault, setShowSaveToVault] = useState(false);
+const DocumentPreview = ({ form, aiContent, currentStep, conditions, onSaveToVault }) => {
   const containerRef = useRef(null);
-
-  const handleSaveToVault = () => {
-    setShowSaveToVault(true);
-  };
-
-  const handleVaultSaveSuccess = () => {
-    setShowSaveToVault(false);
-  };
-
-  const handleVaultCancel = () => {
-    setShowSaveToVault(false);
-  };
 
   // Auto-scroll to bottom when content changes
   useEffect(() => {
@@ -200,10 +186,11 @@ const DocumentPreview = ({ form, aiContent, currentStep, conditions }) => {
                 />
               </div>
             </div>
-            {/* Save to Vault button */}
+            {/* Save to Vault button */
+            }
             <div className="flex justify-end mt-3 sm:mt-4">
               <button
-                onClick={handleSaveToVault}
+                onClick={onSaveToVault}
                 className="flex items-center gap-2 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-purple-600 hover:bg-purple-700 text-white rounded-md transition-colors"
                 title="Save this generated document to vault"
               >
@@ -211,14 +198,6 @@ const DocumentPreview = ({ form, aiContent, currentStep, conditions }) => {
                 Save to Vault
               </button>
             </div>
-            {/* SaveToVault Modal */}
-            <SaveToVault
-              sessionId={`doc-draft-${Date.now()}`}
-              feature="document-drafting"
-              onSave={handleVaultSaveSuccess}
-              onCancel={handleVaultCancel}
-              isVisible={showSaveToVault}
-            />
           </div>
         </div>
       )}

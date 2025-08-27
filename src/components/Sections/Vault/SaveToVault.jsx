@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { vaultService, VAULT_FOLDERS, FOLDER_NAMES, FOLDER_DESCRIPTIONS } from './vaultService';
 import { Save, X, Check, FolderOpen } from 'lucide-react';
 
@@ -31,6 +31,34 @@ const SaveToVault = ({ sessionId, onSave, onCancel, isVisible, feature = 'ai-ass
   };
 
   const selectedFolder = getAutoSelectedFolder();
+
+  const generateDefaultTitle = () => {
+    const now = new Date();
+    const formatted = now.toLocaleString(undefined, {
+      year: 'numeric', month: 'short', day: '2-digit',
+      hour: '2-digit', minute: '2-digit'
+    });
+
+    const isDocDraft = feature === 'document-drafting' || sessionId?.startsWith?.('doc-draft-');
+    if (isDocDraft) {
+      const form = sessionData?.form || {};
+      if (form.title && String(form.title).trim()) return String(form.title).trim();
+      const pieces = [];
+      if (form.type) pieces.push(String(form.type));
+      if (form.client) pieces.push(String(form.client));
+      if (pieces.length) return pieces.join(' - ');
+      return `Document Draft - ${formatted}`;
+    }
+
+    return `AI Session - ${formatted}`;
+  };
+
+  useEffect(() => {
+    if (isVisible && !title.trim()) {
+      setTitle(generateDefaultTitle());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isVisible, sessionId, feature, sessionData]);
 
   const handleSave = async () => {
     if (!title.trim()) {

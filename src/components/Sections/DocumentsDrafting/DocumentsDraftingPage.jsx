@@ -1362,7 +1362,8 @@ const DocumentsDraftingPage = () => {
                 form={form} 
                 aiContent={aiContent} 
                 currentStep={currentStep} 
-                conditions={conditions} 
+                conditions={conditions}
+                onSaveToVault={handleSaveToVault}
               />
             </div>
           </div>
