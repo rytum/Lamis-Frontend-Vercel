@@ -150,6 +150,7 @@ const AIAssistanceView = () => {
   const [drawerOpen, setDrawerOpen] = useState(false); // State for mobile sidebar
   const [sessions, setSessions] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [inputValue, setInputValue] = useState(""); // Add input value state
   const [mainSidebarExpanded, setMainSidebarExpanded] = useState(false);
   const [currentSession, setCurrentSession] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -1541,18 +1542,7 @@ const AIAssistanceView = () => {
                       <div className="flex justify-center items-center gap-4">
                         <button
                           onClick={() => {
-                            const suggestedContent = "What legal implications and penalties are associated with vandalism?";
-                            // Find the input field and populate it
-                            const inputField = document.querySelector('textarea[placeholder*="Ask"], textarea[placeholder*="question"], input[placeholder*="Ask"], input[placeholder*="question"]') || 
-                                             document.querySelector('textarea') || 
-                                             document.querySelector('input[type="text"]');
-                            if (inputField) {
-                              inputField.value = suggestedContent;
-                              inputField.focus();
-                              // Trigger input event for React to recognize the change
-                              const event = new Event('input', { bubbles: true });
-                              inputField.dispatchEvent(event);
-                            }
+                            setInputValue("What legal implications and penalties are associated with vandalism?");
                           }}
                           className="group px-6 py-3 rounded-xl border-2 border-transparent hover:border-purple-300 dark:hover:border-purple-600 bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                         >
@@ -1565,18 +1555,7 @@ const AIAssistanceView = () => {
                         </button>
                         <button
                           onClick={() => {
-                            const suggestedContent = "What is the distinction between vandalism and public art?";
-                            // Find the input field and populate it
-                            const inputField = document.querySelector('textarea[placeholder*="Ask"], textarea[placeholder*="question"], input[placeholder*="Ask"], input[placeholder*="question"]') || 
-                                             document.querySelector('textarea') || 
-                                             document.querySelector('input[type="text"]');
-                            if (inputField) {
-                              inputField.value = suggestedContent;
-                              inputField.focus();
-                              // Trigger input event for React to recognize the change
-                              const event = new Event('input', { bubbles: true });
-                              inputField.dispatchEvent(event);
-                            }
+                            setInputValue("What is the distinction between vandalism and public art?");
                           }}
                           className="group px-6 py-3 rounded-xl border-2 border-transparent hover:border-purple-300 dark:hover:border-purple-600 bg-transparent hover:bg-purple-50 dark:hover:bg-purple-900/20 transition-all duration-200 shadow-sm hover:shadow-md transform hover:scale-105"
                         >
@@ -1595,7 +1574,16 @@ const AIAssistanceView = () => {
                 {/* Floating Input Box - Gemini Style */}
                 <div className="absolute bottom-0 left-0 right-0 z-10 bg-white dark:bg-[#121212] pt-6 pb-6 border-t border-transparent">
                   <div className="max-w-4xl mx-auto px-6">
-                    <AIAssistanceInput onSend={handleSend} isLoading={loading} aiResponding={aiStartedResponding} />
+                    <AIAssistanceInput 
+                      value={inputValue}
+                      onChange={e => setInputValue(e.target.value)}
+                      onSend={(message) => {
+                        handleSend(message);
+                        setInputValue("");
+                      }}
+                      isLoading={loading} 
+                      aiResponding={aiStartedResponding} 
+                    />
                   </div>
                 </div>
               </div>

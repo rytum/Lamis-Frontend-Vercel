@@ -325,9 +325,6 @@ const VaultView = () => {
                     >
                       <span className="text-sm">{getFolderIcon(folderKey)}</span>
                       <span className="hidden sm:inline">{folderName}</span>
-                      <span className="text-xs bg-purple-100 dark:bg-purple-900/30 px-1.5 py-0.5 rounded-full">
-                        {folderStats[folderKey] || 0}
-                      </span>
                     </button>
                   ))}
                 </div>
