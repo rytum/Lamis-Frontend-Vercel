@@ -14,7 +14,7 @@ import { API_CONFIG } from '../../../utils/apiConfig';
 const ThinkingAnimation = () => {
     return (
         <div className="flex justify-start mb-4">
-            <div className="bg-neutral-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 max-w-[90%] sm:max-w-[85%] shadow-md">
+            <div className="bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 rounded-xl px-3 py-2 sm:px-4 sm:py-3 max-w-[90%] sm:max-w-[85%] shadow-md border border-gray-200 dark:border-neutral-700">
                 <div className="flex items-center space-x-2">
                     <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -393,7 +393,7 @@ const UploadPage = () => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen w-full bg-background text-foreground">
+        <div className="flex flex-col min-h-screen w-full bg-white dark:bg-background text-gray-900 dark:text-foreground">
             <div className="flex flex-1">
                 {/* Desktop Sidebar */}
                 <div className="hidden md:block">
@@ -448,9 +448,9 @@ const UploadPage = () => {
                     <div className="w-full flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                         {!chatMode ? (
                             <form className="flex flex-col items-center w-full max-w-xl px-4" onSubmit={handleStartChat}>
-                                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center">Ask Questions About Your Legal Document</h1>
+                                <h1 className="text-2xl md:text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">Ask Questions About Your Legal Document</h1>
                                 <div
-                                    className={`flex flex-col items-center justify-center h-32 md:h-40 w-full max-w-md mx-auto border-2 border-dashed border-purple-500 rounded-lg bg-gray-50 dark:bg-transparent cursor-pointer mb-4 transition hover:border-purple-400 ${file ? 'py-4 md:py-6' : 'py-8 md:py-12'}`}
+                                    className={`flex flex-col items-center justify-center h-32 md:h-40 w-full max-w-md mx-auto border-2 border-dashed border-purple-500 rounded-lg bg-purple-50/50 dark:bg-transparent cursor-pointer mb-4 transition hover:border-purple-400 hover:bg-purple-50/70 dark:hover:bg-transparent ${file ? 'py-4 md:py-6' : 'py-8 md:py-12'}`}
                                     onClick={() => fileInputRef.current.click()}
                                     onDrop={handleDrop}
                                     onDragOver={handleDragOver}
@@ -486,7 +486,7 @@ const UploadPage = () => {
                                         Start Chat
                                     </button>
                                 )}
-                                {error && <div className="mt-2 text-red-400 text-center">{error}</div>}
+                                {error && <div className="mt-2 text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2 text-center text-sm">{error}</div>}
                                 
                                 {/* Backend Status Indicator */}
                                 <div className="mt-4 text-center space-y-2">
@@ -526,9 +526,9 @@ const UploadPage = () => {
                                 </div>
                             </form>
                         ) : (
-                            <div className="flex flex-col w-full h-full max-w-4xl mx-auto">
-                                <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-4">
-                                    <div className="max-w-4xl mx-auto space-y-4">
+                            <div className="flex flex-col w-full h-full max-w-4xl mx-auto bg-white dark:bg-transparent">
+                                <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-4 bg-gray-50/30 dark:bg-transparent rounded-t-lg">
+                                    <div className="max-w-4xl mx-auto space-y-4 py-4">
                                         {messages.map((msg, idx) => {
                                             // Find the corresponding user message for AI responses
                                             const userMessage = msg.role === 'assistant' && idx > 0 ? messages[idx - 1]?.content : null;
@@ -538,12 +538,12 @@ const UploadPage = () => {
                                                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                                                 >
                                                     <div
-                                                        className={`rounded-xl px-3 py-2 sm:px-4 sm:py-3 max-w-[90%] sm:max-w-[85%] break-words shadow-md text-xs sm:text-sm md:text-base ${
+                                                        className={`rounded-xl px-3 py-2 sm:px-4 sm:py-3 max-w-[90%] sm:max-w-[85%] break-words shadow-md text-xs sm:text-sm md:text-base border ${
                                                             msg.role === 'user'
-                                                                ? 'bg-purple-600 text-white self-end'
+                                                                ? 'bg-purple-600 text-white self-end border-purple-600'
                                                                 : msg.role === 'error'
-                                                                ? 'bg-red-600 text-white self-start'
-                                                                : 'bg-neutral-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 self-start'
+                                                                ? 'bg-red-600 text-white self-start border-red-600'
+                                                                : 'bg-gray-100 dark:bg-neutral-800 text-gray-900 dark:text-gray-100 self-start border-gray-200 dark:border-neutral-700'
                                                         }`}
                                                     >
                                                         {msg.role === 'assistant' ? (
@@ -562,7 +562,7 @@ const UploadPage = () => {
                                                         )}
                                                         {/* Show references if present */}
                                                         {msg.references && Array.isArray(msg.references) && msg.references.length > 0 && (
-                                                            <div className="mt-3 text-[10px] text-purple-600">
+                                                            <div className="mt-3 text-[10px] text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/20 rounded px-2 py-1">
                                                                 <strong>References:</strong> {msg.references.join(', ')}
                                                             </div>
                                                         )}
@@ -587,7 +587,7 @@ const UploadPage = () => {
                                         <div ref={messagesEndRef} />
                                     </div>
                                 </div>
-                                <div className="px-4 pb-4">
+                                <div className="px-4 pb-4 bg-white dark:bg-transparent border-t border-gray-200 dark:border-neutral-700">
                                     <AIAssistanceInput onSend={handleSend} isLoading={loading} />
                                 </div>
                             </div>

@@ -146,9 +146,100 @@ function FilePreview({ files, onRemoveFile }) {
 }
 
 // Voice recording component
-function VoiceRecorder({ isRecording, onTranscript }) {
+function VoiceRecorder({ isRecording, onTranscript, onAutoStop }) {
   const [recognition, setRecognition] = useState(null);
   const [isSupported, setIsSupported] = useState(false);
+  const [audioContext, setAudioContext] = useState(null);
+  const [analyser, setAnalyser] = useState(null);
+  const [mediaStream, setMediaStream] = useState(null);
+  const silenceTimerRef = useRef(null);
+  const audioLevelRef = useRef(0);
+  const isMonitoringRef = useRef(false);
+
+  // Audio level monitoring function
+  const monitorAudioLevel = (analyserNode) => {
+    if (!isMonitoringRef.current) return;
+
+    const bufferLength = analyserNode.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyserNode.getByteFrequencyData(dataArray);
+
+    // Calculate average audio level
+    const average = dataArray.reduce((sum, value) => sum + value, 0) / bufferLength;
+    audioLevelRef.current = average;
+
+    // Check if there's audio activity (threshold can be adjusted)
+    const hasAudio = average > 5; // Minimum threshold for audio detection
+
+    if (hasAudio) {
+      // Reset silence timer if there's audio
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = null;
+      }
+    } else {
+      // Start silence timer if no audio and timer not already running
+      if (!silenceTimerRef.current) {
+        silenceTimerRef.current = setTimeout(() => {
+          // Auto-stop recording after 7 seconds of silence
+          if (onAutoStop) {
+            onAutoStop();
+          }
+        }, 7000); // 7 seconds
+      }
+    }
+
+    // Continue monitoring
+    if (isMonitoringRef.current) {
+      requestAnimationFrame(() => monitorAudioLevel(analyserNode));
+    }
+  };
+
+  // Setup audio monitoring
+  const setupAudioMonitoring = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const context = new (window.AudioContext || window.webkitAudioContext)();
+      const analyserNode = context.createAnalyser();
+      const source = context.createMediaStreamSource(stream);
+      
+      analyserNode.fftSize = 256;
+      source.connect(analyserNode);
+      
+      setAudioContext(context);
+      setAnalyser(analyserNode);
+      setMediaStream(stream);
+      
+      // Start monitoring
+      isMonitoringRef.current = true;
+      monitorAudioLevel(analyserNode);
+      
+    } catch (error) {
+      console.error('Error setting up audio monitoring:', error);
+    }
+  };
+
+  // Cleanup audio monitoring
+  const cleanupAudioMonitoring = () => {
+    isMonitoringRef.current = false;
+    
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    
+    if (mediaStream) {
+      mediaStream.getTracks().forEach(track => track.stop());
+      setMediaStream(null);
+    }
+    
+    if (audioContext && audioContext.state !== 'closed') {
+      audioContext.close();
+      setAudioContext(null);
+    }
+    
+    setAnalyser(null);
+  };
 
   useEffect(() => {
     // Check if browser supports speech recognition
@@ -206,6 +297,9 @@ function VoiceRecorder({ isRecording, onTranscript }) {
         if (recognition) {
           recognition.start();
           // Voice recognition started silently
+          
+          // Setup audio monitoring for silence detection
+          setupAudioMonitoring();
         }
       } catch (error) {
         // console.error('Error starting speech recognition:', error);
@@ -213,10 +307,17 @@ function VoiceRecorder({ isRecording, onTranscript }) {
     } else {
       try {
         recognition.stop();
+        // Cleanup audio monitoring when stopping
+        cleanupAudioMonitoring();
       } catch (error) {
         // console.error('Error stopping speech recognition:', error);
       }
     }
+
+    // Cleanup on component unmount
+    return () => {
+      cleanupAudioMonitoring();
+    };
   }, [isRecording, recognition, isSupported]);
 
   if (!isSupported) {
@@ -291,10 +392,22 @@ const ChatInput = ({ onSend, onFileUpload, onMicToggle, isLoading = false, aiRes
     }
   };
 
+  // Handler for auto-stop due to silence
+  const handleAutoStop = () => {
+    setIsRecording(false);
+    if (onMicToggle) onMicToggle(false);
+    // Optional: You can add a visual indicator or notification here
+    console.log('Recording stopped automatically due to 7 seconds of silence');
+  };
+
   return (
     <div className="w-full flex flex-col gap-1">
       {/* Voice Recorder Component */}
-      <VoiceRecorder isRecording={isRecording} onTranscript={handleTranscript} />
+      <VoiceRecorder 
+        isRecording={isRecording} 
+        onTranscript={handleTranscript} 
+        onAutoStop={handleAutoStop}
+      />
       
       {/* Upload Success Message */}
       {uploadSuccess && (

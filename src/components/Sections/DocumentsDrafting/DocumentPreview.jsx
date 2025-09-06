@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import { FileText, Calendar, MapPin, Clock, User, Building, Type } from 'lucide-react';
-import StreamingText from '../AIAssistance/StreamingText';
 
 const DocumentPreview = ({ form, aiContent, currentStep, conditions, onSaveToVault }) => {
   const containerRef = useRef(null);
@@ -173,17 +172,8 @@ const DocumentPreview = ({ form, aiContent, currentStep, conditions, onSaveToVau
           </div>
           <div className="overflow-y-auto">
             <div className="prose dark:prose-invert max-w-none text-sm sm:text-base leading-relaxed">
-              <div className="text-gray-900 dark:text-purple-100">
-                <StreamingText 
-                  text={aiContent[currentStep]} 
-                  speed={15}
-                  onComplete={() => {
-                    // Auto-scroll to bottom when streaming completes
-                    if (containerRef.current) {
-                      containerRef.current.scrollTop = containerRef.current.scrollHeight;
-                    }
-                  }}
-                />
+              <div className="text-gray-900 dark:text-purple-100 whitespace-pre-wrap">
+                {aiContent[currentStep]}
               </div>
             </div>
             {/* Save to Vault button */
