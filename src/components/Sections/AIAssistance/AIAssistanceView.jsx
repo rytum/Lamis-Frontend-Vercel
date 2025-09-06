@@ -1441,7 +1441,7 @@ const AIAssistanceView = () => {
                             <div className={`${msg.role === 'user' ? 'ml-auto' : 'mr-auto'} max-w-full`}>
                               <div className={` ${
                                 msg.role === 'user'
-                                  ? 'text-white'
+                                  ? 'text-gray-900 dark:text-white'
                                   : msg.role === 'error'
                                   ? 'bg-red-50 text-red-800 border border-red-200 dark:bg-red-900/20 dark:text-red-200 dark:border-red-800'
                                   : ''
