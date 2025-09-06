@@ -169,7 +169,7 @@ const MergedSidebar = ({ onNewChat, refreshHistory, userId, onDeleteSession, onC
               className="h-6 w-6 object-contain hidden dark:block"
             />
             <span className="text-base font-medium text-gray-700 dark:text-gray-200">
-              LAMA AI
+              LAMIS AI
             </span>
           </button>
         </div>

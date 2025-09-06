@@ -1426,7 +1426,7 @@ const AIAssistanceView = () => {
                                 </div>
                               )}
                               <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                                {msg.role === 'user' ? 'You' : 'LAMA AI'}
+                                {msg.role === 'user' ? 'You' : 'LAMIS AI'}
                               </span>
                               {msg.role === 'user' && (
                                 <div className="w-8 h-8 bg-neutral-300 dark:bg-neutral-600 rounded-full flex items-center justify-center">

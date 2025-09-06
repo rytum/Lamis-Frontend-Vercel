@@ -24,19 +24,17 @@ function ChatInputField({ value, onChange, onKeyDown, disabled, onFileUpload, fi
   };
 
   return (
-    <div className={`relative w-full transition-all duration-500 ease-in-out ${
-      isLoading || aiResponding ? 'scale-95 opacity-85' : 'scale-100 opacity-100'
-    }`}>
+    <div className={`relative w-full transition-all duration-500 ease-in-out`}>
       <input
         type="text"
         value={value}
         onChange={onChange}
         onKeyDown={onKeyDown}
         placeholder={isLoading ? "Thinking..." : (hasFiles ? "Type your message or press Enter to send with files..." : "Ask your legal question")}
-        className={`w-full bg-gray-200 dark:bg-[#121212] text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-300 rounded-2xl sm:rounded-3xl px-3 sm:px-4 pr-24 sm:pr-28 md:pr-32 border-2 transition-all duration-500 ease-in-out outline-none disabled:opacity-50 disabled:cursor-not-allowed focus:border-gray-500 dark:focus:border-gray-400 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 font-medium sm:font-semibold text-sm sm:text-base ${
+        className={`w-full bg-gray-200 dark:bg-[#121212] text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-300 rounded-2xl sm:rounded-3xl px-3 sm:px-4 pr-24 sm:pr-28 md:pr-32 border-2 transition-all duration-500 ease-in-out outline-none disabled:opacity-50 disabled:cursor-not-allowed focus:border-gray-500 dark:focus:border-gray-400 focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700 font-medium sm:font-semibold text-sm sm:text-base py-2 sm:py-3 md:py-4 lg:py-5 ${
           isLoading || aiResponding
-            ? 'py-1.5 sm:py-2 md:py-2.5 lg:py-3 border-gray-300 dark:border-gray-600 shadow-sm bg-gray-150 dark:bg-[#1a1a1a]' 
-            : 'py-2 sm:py-3 md:py-4 lg:py-5 border-gray-400 dark:border-gray-500 shadow-md'
+            ? 'border-gray-300 dark:border-gray-600 shadow-sm bg-gray-150 dark:bg-[#1a1a1a]' 
+            : 'border-gray-400 dark:border-gray-500 shadow-md'
         }`}
         disabled={disabled}
         autoComplete="off"
@@ -56,9 +54,7 @@ function ChatInputField({ value, onChange, onKeyDown, disabled, onFileUpload, fi
 // Sub-component for the action buttons inside the input field
 function ChatInputActions({ onSend, onFileUpload, onMicToggle, isRecording, disabled, fileInputRef, hasContent, isLoading, aiResponding }) {
   return (
-    <div className={`absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 gap-2 transition-all duration-500 ease-in-out ${
-      isLoading || aiResponding ? 'scale-95 opacity-85' : 'scale-100 opacity-100'
-    }`}>
+    <div className={`absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 gap-2 transition-all duration-500 ease-in-out`}>
       {/* File Upload Button */}
       <button 
         className="p-1 sm:p-1.5 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 hover:scale-105 transition-all duration-200 text-gray-600 dark:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed" 

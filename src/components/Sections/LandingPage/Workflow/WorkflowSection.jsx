@@ -95,25 +95,26 @@ export default function WorkflowSection() {
           <h1 className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 px-2 ${
             resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'
           }`}>
-            Live Case Workflow: Miller v. City Parks Dept.
+            Workflow Automation
           </h1>
           <p className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto px-4 ${
             resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            Track the real-time progress of your vandalism case. Completed steps are highlighted, showing exactly where we are in the process.
+            Simplify Your Workflow from Intake to Strategy <br/>
+Let our intelligent system automate the process, so you can deliver results faster
           </p>
           <div className="mt-8 flex justify-center gap-4">
             <a 
               className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-colors duration-300" 
               href="#"
             >
-              View Case Documents
+              Request a Demo
             </a>
             <a 
               className={`${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600 text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-900'} font-semibold py-3 px-6 rounded-lg shadow-md transition-colors duration-300`}
               href="#"
             >
-              Contact Attorney
+              Learn More
             </a>
           </div>
         </header>
@@ -523,37 +524,37 @@ export default function WorkflowSection() {
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-gray-100 border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">assignment</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Initial Assessment and Intake</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Systematic client intake gathers essential information like nature of vandalism, damage amount, evidence, police involvement, and insurance claims for proper case categorization.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}> Our systematic client intake gathers essential information, including the nature of vandalism, damage amount, evidence, police involvement, and insurance claims, for proper case categorization..</p>
               </div>
               
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">rule</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Intelligent Case Classification</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Automatically determines if a case is criminal or civil, and for criminal cases under California Penal Code § 594, differentiates between misdemeanor and felony charges.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>The system automatically determines if a case is criminal or civil and, for criminal cases under California Penal Code § 594, differentiates between misdemeanor and felony charges.</p>
               </div>
               
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">drag_indicator</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Manual Workflow Adjustment</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Attorneys can manually adjust the case workflow by dragging and dropping tasks, allowing for flexible adaptation to unique case requirements or strategic changes.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Sophisticated jurisdiction determination flags cases that may fall under federal jurisdiction, ensuring they are prosecuted under the correct laws like 18 U.S.C. § 1361.</p>
               </div>
               
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">account_tree</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Role-Based Process Branching</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Creates distinct pathways for Criminal Defense, Victim Assistance, Civil Plaintiff, and Civil Defense roles, tailoring the process to the client's specific needs.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Distinct pathways are created for Criminal Defense, Victim Assistance, and Civil Plaintiff to tailor the process to the client's specific needs.</p>
               </div>
               
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">gavel</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Automated Court Selection</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>For civil cases, the system automatically routes to the appropriate court—Small Claims or Superior Court—based on the damage amounts involved.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}> For civil cases, the system automatically routes to the appropriate court—Small Claims or Superior Court—based on the damage amounts involved.</p>
               </div>
               
               <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-3xl text-purple-600 mb-4">sync</span>
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Real-Time Progress Tracking</h3>
-                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>Clients and attorneys can see the live status of their case directly on the workflow, highlighting completed, active, and upcoming steps.</p>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}> Clients and attorneys can track the live status of their case directly on the workflow, including completed, active, and upcoming steps.</p>
               </div>
             </div>
           </section>
@@ -564,8 +565,8 @@ export default function WorkflowSection() {
               resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>Trusted by Leading Law Firms</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-5xl mx-auto px-4">
-                             <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg`}>
-                 <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-6 text-lg italic`}>"Lamis AI's live workflow is a transparency breakthrough. Our clients feel more connected and informed, seeing their case progress in real-time. It has fundamentally improved our client relationships."</p>
+                             <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
+                 <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-6 text-lg italic`}>"Lamis AI's live workflow is a transparency breakthrough. Our clients feel more connected and informed, seeing their case progress in real-time."</p>
                  <div className="flex items-center">
                    <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center mr-4">
                      <span className="text-white text-xl font-bold">JS</span>
@@ -577,8 +578,8 @@ export default function WorkflowSection() {
                  </div>
                </div>
               
-                             <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg`}>
-                 <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-6 text-lg italic`}>"The integrated case management and workflow visualization is brilliant. The ability to drag and drop workflow steps gives us the flexibility we need for complex cases. A must-have for modern law firms."</p>
+                             <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg p-8 shadow-lg transition-transform duration-300 hover:scale-105`}>
+                 <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-6 text-lg italic`}>"The integrated case management and workflow visualization is brilliant. It not only streamlines our internal processes but also provides clients with an unprecedented level of clarity."</p>
                  <div className="flex items-center">
                    <div className="w-12 h-12 rounded-full bg-purple-600 flex items-center justify-center mr-4">
                      <span className="text-white text-xl font-bold">DT</span>
@@ -598,23 +599,23 @@ export default function WorkflowSection() {
               resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'
             }`}>Workflow Automation Benefits for Law Firms</h2>
             <div className="max-w-4xl mx-auto space-y-6 md:space-y-8 px-4">
-              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6`}>
+              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-2xl sm:text-3xl text-purple-600 mt-1">speed</span>
                 <div>
-                  <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Enhanced Efficiency and Flexibility</h3>
-                  <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm sm:text-base`}>The automated decision trees reduce manual assessment time, while drag-and-drop functionality allows for quick workflow adjustments to accommodate unique case needs.</p>
+                  <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Enhanced Efficiency</h3>
+                  <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm sm:text-base`}> Automated decision trees reduce manual case assessment time while ensuring comprehensive evaluation of all relevant factors.</p>
                 </div>
               </div>
               
-              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6`}>
+              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-2xl sm:text-3xl text-purple-600 mt-1">chat</span>
                 <div>
                   <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Improved Client Communication</h3>
-                  <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm sm:text-base`}>Visual flowcharts provide clear explanations of case progression and potential outcomes, enhancing attorney-client relationships.</p>
+                  <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} text-sm sm:text-base`}>Visual flowcharts provide clear explanations of case progression and potential outcomes, enhancing attorney–client relationships.</p>
                 </div>
               </div>
               
-              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6`}>
+              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-2xl sm:text-3xl text-purple-600 mt-1">shield</span>
                 <div>
                   <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Risk Management</h3>
@@ -622,7 +623,7 @@ export default function WorkflowSection() {
                 </div>
               </div>
               
-              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6`}>
+              <div className={`${resolvedTheme === 'dark' ? 'bg-black border-gray-700' : 'bg-white border-gray-300'} border rounded-lg shadow-lg p-6 md:p-8 flex flex-col sm:flex-row items-start gap-4 sm:gap-6 transition-transform duration-300 hover:scale-105`}>
                 <span className="material-icons text-2xl sm:text-3xl text-purple-600 mt-1">verified_user</span>
                 <div>
                   <h3 className={`text-lg sm:text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Standardized Quality</h3>
